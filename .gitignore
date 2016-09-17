@@ -1,29 +1,75 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <math.h>
+using namespace std;
+int main(int argc, const char * argv[]) {
+    // setting up variables
+    int seed;
+    int sizeOfCode;
+    int codeTA = 0;
+    int digits;
+    // setting up random number generator
+    cout << "What is your seed value select a diffrent seed than before to get a diffrent code" << endl;
+    cin >> seed;
+    srand(seed);
+    
+    // getting values for size of array
+    cout << "Enter number of digits in code (3, 4 or 5):";
+    cin >> sizeOfCode;
+    while (((sizeOfCode > 5) || (sizeOfCode < 3)) && (sizeOfCode !=0))
+    {
+        cout << endl <<"Not a valid size";
+        cout << endl << "Enter number of digits in code (3, 4 or 5):";
+        cin >> sizeOfCode;
+    }
+    // initializing the vectors
+    vector<int> Code(sizeOfCode);
+    vector<int> Guess(sizeOfCode);
+    if (sizeOfCode == 0)
+    {
+        cout << "Enter code:";
+        cin >> codeTA;
+        cout << "Number of digits in code";
+        cin >> digits;
+        goto stop;
+    }
+    // initializing the vector values
+    Code = {(rand()%9)+1, (rand()%9)+1,(rand()%9)+1,(rand()%9)+1};
+    cout << endl << Code.at(0) << Code.at(1) << Code.at(2) << Code.at(3);
+    
+stop:
+    Code.resize(digits);
+    for (int i = 0; i<digits;i++)
+    {
+        int Base10=1;// for the power of 10 in integer form
+        for (int j = 0; j<=(i);j++)
+        {
+            Base10 = Base10 * 10;
+        }
+        Code.at(digits-(i+1)) = codeTA % Base10;
+        while (Code.at(digits-(i+1))>9)
+        {
+            Code.at(digits-(i+1)) = Code.at(digits-(i+1))/10;
+        }
+        if ((codeTA/Base10)==0)
+        {
+            goto end;
+        }
+        codeTA = codeTA - Code.at(digits-(i+1));
 
-# Precompiled Headers
-*.gch
-*.pch
+    }
+end:
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+    while (Code.size() < digits)
+    {
+        Code.insert(Code.begin(),0);
+        
+    }
+    for (int i = 0; i<digits; i++)
+    {
+        cout << Code.at(i);
+    }
+    std::cout << endl << "Hello, World!\n";
+    return 0;
+}
